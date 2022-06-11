@@ -29,3 +29,5 @@ npm create-react-app house-renting-mobile
 npm install --save antd-mobile
 
 npm install react-router-dom --save
+
+yarn add axios
