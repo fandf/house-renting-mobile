@@ -31,3 +31,5 @@ npm install --save antd-mobile
 npm install react-router-dom --save
 
 yarn add axios
+
+yarn add node-sass
