@@ -39,6 +39,10 @@ const navs = [
   },
 ];
 
+navigator.geolocation.getCurrentPosition((position) =>
+  console.log("当前位置信息： ", position)
+);
+
 class Index extends Component {
   state = {
     swipersLoadFlag: false,
@@ -48,6 +52,7 @@ class Index extends Component {
     groups: [],
     //最新资讯
     news: [],
+    curCityName: "西安",
   };
 
   //获取轮播图数据方法
@@ -78,6 +83,18 @@ class Index extends Component {
     this.getSwipers();
     this.getGroups();
     this.getNews();
+    //通过ip定位获取当前城市名称
+    const curCity = new window.BMapGL.LocalCity();
+    curCity.get((res) => {
+      console.log("位置：", res);
+      const result = axios.get(
+        `http://139.196.45.28:8080/area/info?name=${res.name}`
+      );
+      this.setState({
+        // curCityName: result.data.body.label,
+        curCityName: res.name,
+      });
+    });
   }
 
   //渲染轮播图结构
@@ -148,6 +165,35 @@ class Index extends Component {
           ) : (
             ""
           )}
+
+          {/* 搜索框 */}
+          <Flex className="search-box">
+            {/* 左侧白色区域 */}
+            <Flex className="search">
+              {/* 位置 */}
+              <div
+                className="location"
+                onClick={() => this.props.navigate("/citylist")}
+              >
+                <span className="name">{this.state.curCityName}</span>
+                <i className="iconfont icon-arrow" />
+              </div>
+
+              {/* 搜索表单 */}
+              <div
+                className="form"
+                onClick={() => this.props.navigate("/search")}
+              >
+                <i className="iconfont icon-seach" />
+                <span className="text">请输入小区或地址</span>
+              </div>
+            </Flex>
+            {/* 右侧地图图标 */}
+            <i
+              className="iconfont icon-map"
+              onClick={() => this.props.navigate("/map")}
+            />
+          </Flex>
         </div>
         {/* 导航菜单 */}
         <Flex className="nav">{this.renderNavs()}</Flex>

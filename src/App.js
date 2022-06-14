@@ -12,6 +12,7 @@ import {
 //导入首页和城市选择两个组件
 import CityList from "./pages/CityList";
 import Home from "./pages/Home";
+import Map from "./pages/Map";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<Navigate to="/home/index" />} />
           <Route path="/home/*" element={<Home />}></Route>
           <Route path="/citylist" element={<CityList />}></Route>
+          <Route path="/map" element={<Map />} />
         </Routes>
       </div>
     </Router>
