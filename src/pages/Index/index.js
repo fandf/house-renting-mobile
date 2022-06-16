@@ -7,6 +7,7 @@ import Nav3 from "../../assets/images/nav-3.png";
 import Nav4 from "../../assets/images/nav-4.png";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
+import { getCurrentCity } from "../../utils";
 
 export const withNavigation = (Component) => {
   return (props) => <Component {...props} navigate={useNavigate()} />;
@@ -39,9 +40,9 @@ const navs = [
   },
 ];
 
-navigator.geolocation.getCurrentPosition((position) =>
-  console.log("当前位置信息： ", position)
-);
+// navigator.geolocation.getCurrentPosition((position) =>
+//   console.log("当前位置信息： ", position)
+// );
 
 class Index extends Component {
   state = {
@@ -52,7 +53,7 @@ class Index extends Component {
     groups: [],
     //最新资讯
     news: [],
-    curCityName: "西安",
+    curCityName: "",
   };
 
   //获取轮播图数据方法
@@ -73,27 +74,18 @@ class Index extends Component {
 
   async getNews() {
     const res = await axios.get("http://139.196.45.28:8080/home/news");
-    console.log("getNews", res);
     this.setState({
       news: res.data.body,
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getSwipers();
     this.getGroups();
     this.getNews();
-    //通过ip定位获取当前城市名称
-    const curCity = new window.BMapGL.LocalCity();
-    curCity.get((res) => {
-      console.log("位置：", res);
-      const result = axios.get(
-        `http://139.196.45.28:8080/area/info?name=${res.name}`
-      );
-      this.setState({
-        // curCityName: result.data.body.label,
-        curCityName: res.name,
-      });
+    const curr = await getCurrentCity();
+    this.setState({
+      curCityName: curr.label,
     });
   }
 

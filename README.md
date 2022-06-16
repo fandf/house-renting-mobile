@@ -33,3 +33,5 @@ npm install react-router-dom --save
 yarn add axios
 
 yarn add node-sass
+
+yarn add react-virtualized
