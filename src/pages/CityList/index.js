@@ -1,11 +1,12 @@
 import React from "react";
 //导入NavBar组件
-import { NavBar, Toast } from "antd-mobile";
+import { Toast } from "antd-mobile";
 import "./index.scss";
 import axios from "axios";
 import { List, AutoSizer } from "react-virtualized";
 import { getCurrentCity } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import NavHeader from "../../components/NavHeader";
 
 const formatCityData = (list) => {
   const cityList = {};
@@ -61,8 +62,6 @@ class CityList extends React.Component {
 
   async componentDidMount() {
     await this.getCityList();
-    //提前计算list中每一行的高度，实现scrollToRow精确跳转
-    this.cityListComponent.current.measureAllRows();
   }
 
   async getCityList() {
@@ -76,13 +75,16 @@ class CityList extends React.Component {
     const curCity = await getCurrentCity();
     cityList["#"] = [curCity];
     cityIndex.unshift("#");
-
-    console.log("cityList", cityList);
-    console.log("cityIndex", cityIndex);
-    this.setState({
-      cityList: cityList,
-      cityIndex: cityIndex,
-    });
+    this.setState(
+      {
+        cityList: cityList,
+        cityIndex: cityIndex,
+      },
+      () => {
+        //提前计算list中每一行的高度，实现scrollToRow精确跳转
+        this.cityListComponent.current.measureAllRows();
+      }
+    );
   }
 
   rowRenderer = ({
@@ -156,15 +158,8 @@ class CityList extends React.Component {
   render() {
     return (
       <div className="citylist">
-        <NavBar
-          className="navbar"
-          mode="light"
-          icon={<i className="iconfont icon-back" />}
-          onLeftClick={() => console.log("onLeftClick")}
-        >
-          城市选择
-        </NavBar>
         {/* 城市列表 */}
+        <NavHeader>城市列表</NavHeader>
         <AutoSizer>
           {({ width, height }) => (
             <List

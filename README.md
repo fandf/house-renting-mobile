@@ -35,3 +35,10 @@ yarn add axios
 yarn add node-sass
 
 yarn add react-virtualized
+
+
+地图找房模块
+列表找房模块
+房屋详情模块
+<!-- 组件校验 -->
+yarn add prop-types
