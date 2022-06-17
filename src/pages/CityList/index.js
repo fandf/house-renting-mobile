@@ -2,11 +2,11 @@ import React from "react";
 //导入NavBar组件
 import { Toast } from "antd-mobile";
 import "./index.scss";
-import axios from "axios";
 import { List, AutoSizer } from "react-virtualized";
 import { getCurrentCity } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import NavHeader from "../../components/NavHeader";
+import { API } from "../../utils/api";
 
 const formatCityData = (list) => {
   const cityList = {};
@@ -66,10 +66,10 @@ class CityList extends React.Component {
 
   async getCityList() {
     //城市数据
-    const res = await axios.get("http://139.196.45.28:8080/area/city?level=1");
+    const res = await API.get("/area/city?level=1");
     const { cityList, cityIndex } = formatCityData(res.data.body);
     //热门城市数据
-    const hotRes = await axios.get("http://139.196.45.28:8080/area/hot");
+    const hotRes = await API.get("/area/hot");
     cityList["hot"] = hotRes.data.body;
     cityIndex.unshift("hot");
     const curCity = await getCurrentCity();

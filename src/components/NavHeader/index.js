@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
-import "./index.scss";
+import style from "./index.module.css";
 
 export const withNavigation = (Component) => {
   return (props) => <Component {...props} navigate={useNavigate()} />;
@@ -15,7 +15,7 @@ function NavHeader({ children, navigate, onLeftClick }) {
 
   return (
     <NavBar
-      className="navbar"
+      className={style.navbar}
       mode="light"
       icon={<i className="iconfont icon-back" />}
       onLeftClick={onLeftClick || defaultHandler}

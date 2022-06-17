@@ -1,4 +1,4 @@
-import axios from "axios";
+import { API } from "./api";
 
 export const getCurrentCity = () => {
   const localCity = JSON.parse(localStorage.getItem("hrm_city"));
@@ -9,9 +9,7 @@ export const getCurrentCity = () => {
       curCity.get(async (res) => {
         try {
           console.log("utils ", res);
-          const result = await axios.get(
-            `http://139.196.45.28:8080/area/info?name=${res.name}`
-          );
+          const result = await API.get(`/area/info?name=${res.name}`);
           //存储本地存储
           console.log("curCity", result);
           localStorage.setItem("hrm_city", JSON.stringify(result.data.body));

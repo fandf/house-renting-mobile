@@ -1,0 +1,10 @@
+.navbar {
+    margin-top: -45px;
+    background-color: #f6f5f6;
+    color: #333;
+    
+}
+/* 全局类名 */
+.navbar :golbal(.am-navbar-title) {
+    color: #333;
+}

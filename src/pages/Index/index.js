@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Carousel, Flex, Grid, WingBlank } from "antd-mobile";
-import axios from "axios";
 import Nav1 from "../../assets/images/nav-1.png";
 import Nav2 from "../../assets/images/nav-2.png";
 import Nav3 from "../../assets/images/nav-3.png";
@@ -8,6 +7,9 @@ import Nav4 from "../../assets/images/nav-4.png";
 import { useNavigate } from "react-router-dom";
 import "./index.scss";
 import { getCurrentCity } from "../../utils";
+import { BASE_URL } from "../../utils/url";
+import { API } from "../../utils/api";
+import SearchHeader from "../../components/SearchHeader";
 
 export const withNavigation = (Component) => {
   return (props) => <Component {...props} navigate={useNavigate()} />;
@@ -58,7 +60,7 @@ class Index extends Component {
 
   //获取轮播图数据方法
   async getSwipers() {
-    const res = await axios.get("http://139.196.45.28:8080/home/swiper");
+    const res = await API.get("/home/swiper");
     this.setState({
       swipers: res.data.body,
       swipersLoadFlag: true,
@@ -66,14 +68,14 @@ class Index extends Component {
   }
 
   async getGroups() {
-    const res = await axios.get("http://139.196.45.28:8080/home/groups");
+    const res = await API.get("/home/groups");
     this.setState({
       groups: res.data.body,
     });
   }
 
   async getNews() {
-    const res = await axios.get("http://139.196.45.28:8080/home/news");
+    const res = await API.get("/home/news");
     this.setState({
       news: res.data.body,
     });
@@ -102,7 +104,7 @@ class Index extends Component {
         }}
       >
         <img
-          src={`http://139.196.45.28:8080${item.imgSrc}`}
+          src={BASE_URL + item.imgSrc}
           alt=""
           style={{ width: "100%", verticalAlign: "top" }}
           onLoad={() => {
@@ -128,11 +130,7 @@ class Index extends Component {
     return this.state.news.map((item) => (
       <div className="news-item" key={item.id}>
         <div className="imgwrap">
-          <img
-            className="img"
-            src={`http://139.196.45.28:8080${item.imgSrc}`}
-            alt=""
-          />
+          <img className="img" src={BASE_URL + item.imgSrc} alt="" />
         </div>
         <Flex className="content" direction="column" justify="between">
           <h3 className="title">{item.title}</h3>
@@ -159,33 +157,7 @@ class Index extends Component {
           )}
 
           {/* 搜索框 */}
-          <Flex className="search-box">
-            {/* 左侧白色区域 */}
-            <Flex className="search">
-              {/* 位置 */}
-              <div
-                className="location"
-                onClick={() => this.props.navigate("/citylist")}
-              >
-                <span className="name">{this.state.curCityName}</span>
-                <i className="iconfont icon-arrow" />
-              </div>
-
-              {/* 搜索表单 */}
-              <div
-                className="form"
-                onClick={() => this.props.navigate("/search")}
-              >
-                <i className="iconfont icon-seach" />
-                <span className="text">请输入小区或地址</span>
-              </div>
-            </Flex>
-            {/* 右侧地图图标 */}
-            <i
-              className="iconfont icon-map"
-              onClick={() => this.props.navigate("/map")}
-            />
-          </Flex>
+          <SearchHeader cityName={this.state.curCityName} />
         </div>
         {/* 导航菜单 */}
         <Flex className="nav">{this.renderNavs()}</Flex>
@@ -207,7 +179,7 @@ class Index extends Component {
                   <p className="title">{item.title}</p>
                   <span className="info">{item.desc}</span>
                 </div>
-                <img src={`http://139.196.45.28:8080${item.imgSrc}`} alt="" />
+                <img src={BASE_URL + item.imgSrc} alt="" />
               </Flex>
             )}
           />

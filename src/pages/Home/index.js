@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
+
+//导入组件自己的样式文件
+import "./index.css";
+
 import News from "../News";
 import Index from "../Index";
 import HouseList from "../HouseList";
 import Profile from "../Profile";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { TabBar } from "antd-mobile";
-
-//导入组件自己的样式文件
-import "./index.css";
 
 export const withNavigation = (Component) => {
   return (props) => (
